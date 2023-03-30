@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background-image: url('./images/ucla_bear.jpg'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%; }
+    </style>
+    <title>CTF UCLA</title>
+</head>
+<script src="cache-side-channel.js" defer></script>
+<script>
+    //make sure to add commas after questions to add to list. \n = newline \t = tab
+    var questions = [
+        "One of UCLA's most famous athletes is Jackie Robinson. \nHe SHIFTed through FOUR sports at UCLA including baseball, basketball, football and track. \nSince he was such an athlete he must have had a lot of CEASER salads, but no one can really CIPHER how he did it.\n\n xlero csy jsv tpecmrk xlmw ygpe gleppirki xli jpek jsv xlmw keqi mw fvymrpievr\n ",
+        "UCLA's iconic Royce Hall has two towers that were built asymmetriclly, kind of like the asymmetry in RSA encryption, or the hashing in SHA256(hex equivalent). \n\nn = 988082649547634539735932714787069852964949779\ne = 65537\nq = 35742549198872617291353508656626642567\n\n(decimal to ASCII for resulting message)\nc = 327097033161733906765917941890866428911800925",
+        "You are given a secret key and a ciphertext. It is your task to decrypt the secret message that was encrypted using XOR encryption. Once you crack the code, you will know the location of the classroom!\n\nThe key is: F\nThe ciphertext is: \n0000110100101111001010000011010100100011001111110110011000010110001001110011000000\n10111100101010001011110010100100101000011001100111011101110100011101100111011000000100\n\nYour task is to split up the cipher text into eights to isolate each encrypted character. \nNext, you will be able to decrypt each code with the key (in its corresponding ASCII code) and then be able to map each code to a character using an ASCII lookup table.\nType your answer into the ‘Flag’ input box.\n\nHint: Watch this video if you are stuck:  <a href='https://youtu.be/NLUug7RQbhI' target='_blank'>https://youtu.be/NLUug7RQbhI</a>",
+        "For this task, you have a binary written in C, as well as the source code.\nYour task is to overflow the array and write to unintended memory to create a shell.\nYou can access the files <a href='https://github.com/spencercz/bufoverflow' target='_blank'>here.</a> \n\n HINT: The python pwntools library is an excellent place to start.\n The functions you'll need to use are <code>process()</code>, <code>recv()</code>, <code>sendline()</code>, and <code>p32()</code>.\n You can use <code>interactive()</code> to see if the shell has been created.\n\nCheck your payload here to receive the flag:\n",
+        "A new security system has been installed to enter Boelter Hall. Only Bruins (brown bears) can get in by facial recognition. \nYou are the attacker trying to circumvent the security system.\nBut, you aren’t a Bruin (brown bear) … you look like <a href='https://imgur.com/a/QR1DHwa' target='_blank'>this.</a>\n\nYou don’t want to be obvious about it, but is there a way you can trick the system into letting you in?\n In other words, can you get into the building without completely changing your appearance?\n Maybe some sort of subtle disguise is needed…\n\nTask: Come up with a disguise that doesn’t drastically change your appearance, yet allows you to pass as a Bruin (brown bear) to the camera system.\nUpload an image of yourself with your subtle disguise to pass through the camera security system.\n \nPlease use <a href='https://colab.research.google.com/drive/1u_j2hlDcf5VO-wHEUDQjnLybMgonBhZ1#scrollTo=vIIsBNDcDbDU' target='_blank'>this</a> solution checker to verify that your implementation fools the system!  \n\nHint 1: You found a piece of the security system manual and notice that the classifier is trained on InceptionV3 \n \nHint 2: The security system manual notes that the camera is trained to recognize students with elaborate disguises",
+        "<p>Take a look at this partial implementation of a system with support for byte-sized memory accesses. The attacker and the victim program do not share memory, but they do use the same direct-mapped cache which has a size of 32 bytes and a block size of 1 byte. The victim program leaks the secret <code>FLAG</code> via a cache side channel. Your task is to determine the value of <code>FLAG</code> by performing memory accesses and running the victim program. Use your browser console to make <code>await sys.attackerAccess()</code> and <code>await sys.victimProgram()</code> function calls and capture the flag!</p><p>For information on caches, see <a href=\"https://docs.google.com/document/d/1KQ_LEzqQlrrOkQiXf-RAeiFgP9ADFlmkepMFMwEf8UI/edit?usp=sharing\" target=\"_blank\">here</a>.</p><p><strong>Note that it is necessary to include the <code>await</code> keyword in front of the function calls for proper behavior.</strong></p><pre><code>\nconst FLAG;\n\nconst MEMORY_SIZE = 128;\nconst VICTIM_MEMORY_START = 0;\nconst VICTIM_MEMORY_END = 64;\nconst ATTACKER_MEMORY_START = 64;\nconst ATTACKER_MEMORY_END = 128;\n\nconst CACHE_SIZE = 32;\n\nclass System {\n  async attackerAccess(address) {\n    if (address < ATTACKER_MEMORY_START || address >= ATTACKER_MEMORY_END) {\n      console.log(\"SEGMENTATION FAULT\");\n      return;\n    }\n    return await this.access(address);\n  }\n\n  async victimProgram() {\n    for (let i = 0; i < FLAG.length; i++) {\n      let char = FLAG.charAt(i);\n      let address = char.charCodeAt() - 65;\n      let value = await this.victimAccess(address);\n    }\n    console.log(\"VICTIM PROGRAM COMPLETE\");\n  }\n}\n\nsys = new System();\n\n</code></pre><p>Hint 0: Which cache blocks are used when different memory addresses are accessed? Read through the <a href=\"https://docs.google.com/document/d/1KQ_LEzqQlrrOkQiXf-RAeiFgP9ADFlmkepMFMwEf8UI/edit?usp=sharing\" target=\"_blank\">information on caches</a> if you're not sure.</p><p>Hint 1: Begin by \"priming\" the cache, filling the cache with known memory blocks using <code>await sys.attackerAccess()</code> calls. Notice that a cache miss takes 3 seconds to retrieve the block from main memory, but each subsequent access of the same block is immediate since it is a cache hit.</p><p>Hint 2: Call <code>await sys.victimProgram()</code> to run the victim program, which replaces certain cache blocks based on the value of <code>FLAG</code>.</p><p>Hint 3: \"Probe\" the cache by making <code>await sys.attackerAccess()</code> calls and observing how long they take. If an access takes 3 seconds, the block must have been replaced by the victim program and needed to be retrieved again from main memory.</p><p>Hint 4: Figure out which cache blocks are associated with which characters and unscramble the letters to find <code>FLAG</code>'s value!</p>",
+     ]
+    //flag answer
+    var flags = [
+        "bruinlearn",
+        "8FEE0B920B40F92916FDECD54021E0905FCA8CA1663BDF2AAAAE8F05D16235A5",
+        "Kinsey Pavilion 1200B",
+        "Buff3r0v3rfl0w!",
+        "flag_75-68",
+        "Bruin"
+    ]
+    //appear as title of quuestion
+    var category = [
+        "Encryption",
+        "Encryption",
+        "Encryption",
+        "Buffer Overflow",
+        "Adversarial ML",
+        "Side Channel",
+    ]
+    //name of picture in images folder
+    var associated_img = [
+        "Jackie_Robinson.jpg", 
+        "Royce_Hall.jpg",
+        "xor_minecraft.png",
+        'overflow.png',
+        "boelter_hall.png",
+        "kinsey_pavilion.jpg",
+    ]
+    //points associated with the question
+    var points = [
+        10,
+        15,
+        10,
+        15,
+        25,
+        25
+    ]
+
+    var solution= [
+        "https://youtu.be/SBvH9uhCG7o",
+        "https://youtu.be/P3VSEmXQJLM",
+        "https://youtu.be/NLUug7RQbhI",
+        "https://www.youtube.com/watch?v=hwvhlwWgsVw",
+        "https://youtu.be/LIlF4aqpgRg",
+        "https://youtu.be/WQc3Q01sL00",
+    ]
+    
+    localStorage.setItem('questions', JSON.stringify(questions))
+    localStorage.setItem('flags', JSON.stringify(flags))
+    localStorage.setItem('category', JSON.stringify(category))
+    localStorage.setItem('associated_img', JSON.stringify(associated_img))
+    localStorage.setItem('points', JSON.stringify(points))
+    localStorage.setItem('solution', JSON.stringify(solution))
+    
+    function question_click(id_clicked){
+        document.getElementById('flag_response').innerHTML = ''
+        document.getElementById('flag_guess').value = ''
+        var index = id_clicked - 1
+        localStorage.setItem('index', index)
+        //clear all borders
+        const buttons = document.querySelectorAll('.question_unanswered');
+        buttons.forEach(box => {  
+        box.style.border = 'none';
+        });
+
+        //add black border to button clicked
+        var elem = document.getElementById(`${id_clicked}`)
+        elem.style.border = "8px solid white"
+        show_question_info(parseInt(index))
+    }
+    function show_question_info(index){
+        //change picture and text displayed
+        document.getElementById('ucla_img').src = `./images/${associated_img[index]}`
+        document.getElementById('question_text').innerHTML = questions[index]
+        if(associated_img[index] == 'overflow.png'){
+            var btn = document.createElement('button');
+            btn.innerHTML = "Test payload";
+            var guess = document.createElement("input");
+            document.getElementById('question_text').appendChild(guess);
+            document.getElementById('question_text').appendChild(btn);
+            btn.addEventListener ("click", function() {
+                check_buf_flag(guess.value);
+            });
+        }
+
+    }
+
+    function check_flag(){
+        var index = localStorage.getItem('index')
+        var id_el = parseInt(index) + 1
+        var atmpt_ans = document.getElementById('flag_guess').value
+        var correct = JSON.parse(localStorage.getItem('correct'))
+        if (atmpt_ans.toLowerCase() == (flags[index]).toLowerCase()){
+            correct[index] = 'True' 
+            document.getElementById(`${id_el}`).style.background = 'green' 
+            document.getElementById('flag_response').innerHTML = 'Correct!'
+        }
+        else{
+            correct[index] = 'False' 
+            document.getElementById(`${id_el}`).style.background = 'rgb(250,250,21)'
+            document.getElementById('flag_response').innerHTML = 'Incorrect! Click Solution button to view answer.'
+        }
+        localStorage.setItem('correct', JSON.stringify(correct))
+        calc_and_display_points(correct)
+    }
+    
+    function calc_and_display_points(correct){
+        var points = JSON.parse(localStorage.getItem('points'))
+        var score_total = 0
+        var possible_score = 0
+        var index = localStorage.getItem('index')
+        var id_el = parseInt(index) + 1
+        for (var i = 0; i < correct.length; i++){
+            if (correct[i] == 'True'){
+                score_total += points[i]     
+            }
+        }
+        for (var x= 0; x < points.length; x++){
+            possible_score += points[x]   
+        }
+        document.getElementById('point_score').innerHTML = `Points: ${score_total}/${possible_score}`
+    }
+
+    function reset_game(){
+        var correct = []
+        var questions = JSON.parse(localStorage.getItem('questions'))
+        for (var i = 0; i < questions.length; i++){
+            correct.push('False')
+        }
+        localStorage.setItem('correct', JSON.stringify(correct))
+        calc_and_display_points(correct)
+        //change back to yellow
+        for (var i = 0; i < questions.length; i++){
+            var id_el = parseInt(i) + 1
+            document.getElementById(`${id_el}`).style.background = 'rgb(250,250,21)'
+        }
+    }
+
+    function display_sol(){
+        var index = localStorage.getItem('index')
+        var solutions = JSON.parse(localStorage.getItem('solution'))
+        window.open(solutions[index], '_blank').focus();
+    }
+
+    //if no list of correct answers avaialble initiate
+    if (localStorage.getItem("correct") === null){
+        var correct = []
+        var questions = JSON.parse(localStorage.getItem('questions'))
+        for (var i = 0; i < questions.length; i++){
+            correct.push('False')
+        }
+        localStorage.setItem('correct', JSON.stringify(correct))
+    }
+    else {
+        correct = JSON.parse(localStorage.getItem('correct'))
+    }
+
+    function check_buf_flag(flag){
+        const re = /(b')?.{60}\\xde\\xca\\xfa\\x00'?/g;
+        if(re.test(flag)){
+            alert("Correct payload! Here's your flag: {Buff3r0v3rfl0w!}");
+        }
+        else{
+            alert("No good! Try again!");
+        }
+    }
+
+</script>
+<body>
+    <!--Top Menu-->
+    <div class = 'top_div'>
+        <p id = 'point_score' style="text-align: left; font-size: 3em; margin-top: 0px; background: rgb(31, 160, 247); color: white;display: inline-block;">Points: 0 </p>
+        <input type="button" onclick = "reset_game()" value="Reset" style="float: right;">
+    </div>
+    
+    <!--Question Buttons-->
+    <div id = 'center_questions' class="center_questions">   
+        <!--<button id = '1' class="question_unanswered" onclick = 'question_click("1")'>Question #3  <br> Category: Encryption<br> Points: 20<br></button>-->
+    </div>
+
+    <!--Bottom space -->
+    <div class = 'bottom_space'>
+
+    </div>
+
+    <!--Question Preview tile-->
+    <div class = 'flag_question'>
+        <!--Image-->
+        <div style = 'text-align: center; background: rgb(252, 218, 25); padding-top: 5px; padding-bottom: 5px;' class = 'question_picture'>
+            <img id = 'ucla_img' src = './images/Royce_Hall.jpg'>
+        </div>
+        
+        <!--Flag Submit-->
+        <div class = "flag_submit" ">
+            <label for="example" style ="margin-left: 4px;">Flag</label>
+            <input id="flag_guess" type="text" >
+            <button id="submit_flag_btn" onclick="check_flag()">Check Flag</button>
+            <button id = 'vid_solution' onclick = "display_sol()"  style="float: right; margin-right: 4px;">Solution</button>
+            <label id ="flag_response" style = "color:white;"></label>
+        </div>
+
+        <!--Question Text-->
+        <div id = 'question_text'>
+            
+        </div>
+    </div>
+
+</body>
+<script src="main.js" defer></script>
+</html>

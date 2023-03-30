@@ -1,0 +1,12 @@
+One of one UCLAs most famous buildings, Royce hall, has two towers that were built Asymetric, kind of like the asymmetry in RSA encryption, or the hashing in SHA256(hex equivalent).
+
+n = 988082649547634539735932714787069852964949779
+e = 65537
+q = 35742549198872617291353508656626642567
+
+(decimal to ASCII for resulting message)
+c = 327097033161733906765917941890866428911800925
+
+
+
+You are given a secret key and a ciphertext. It is your task to decrypt the secret message that was encrypted using XOR encryption. Once you crack the code, you will know the location of the classroom!/nThe key is: F/nThe ciphertext is: 000011010010111100101000001101010010001100111111011001100001011000100111001100000010111100101010001011110010100100101000011001100111011101110100011101100111011000000100/nYour task is to split up the cipher text into eights to isolate each encrypted character. Next, you will be able to decrypt each code with the key (in its corresponding ASCII code) and then be able to map each code to a character using an ASCII lookup table. Type your answer into the ‘Flag’ input box./n/nWatch this video if you are stuck:  <a href='https://youtu.be/NLUug7RQbhI' target='_blank'>https://youtu.be/NLUug7RQbhI</a>

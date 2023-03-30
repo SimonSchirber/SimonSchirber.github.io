@@ -1,0 +1,11 @@
+xlero csy jsv tpecmrk xlmw ygpe gleppirki xli jpek jsv xlmw keqi mw fvymrpievr
+
+One of ucla's most famous athletes is Jackie Robinson. 
+He SHIFTed through FOUR sports at ucla including baseball, basketball, football and track at ucla. 
+Since he was such an athlete he must have had a lot of CEASER salads, but no one can really CIPHER how he did it.
+
+
+A new security system has been installed to enter Boelter Hall. Only Bruins (brown bears) can get in by facial recognition. \n\nYou are the attacker trying to circumvent the security system. \n \nBut, you aren’t a Bruin (brown bear) … you look like this:\nhttps://imgur.com/a/QR1DHwa  \n\nYou don’t want to be obvious about it, but is there a way you can trick the system into letting you in?\n In other words, can you get into the building without completely changing your appearance?\n Maybe some sort of subtle disguise is needed…\n\nTask: Come up with a disguise that doesn’t drastically change your appearance, yet allows you to pass as a Bruin (brown bear) to the camera system.\n Upload an image of yourself with your subtle disguise to pass through the camera security system.\n \nPlease use this solution checker to verify that your implementation fools the system!\nhttps://colab.research.google.com/drive/1u_j2hlDcf5VO-wHEUDQjnLybMgonBhZ1#scrollTo=vIIsBNDcDbDU  \n\nHint: You found a piece of the security system manual and notice that the classifier is trained on InceptionV3 \n \nHint2: The security system manual notes that the camera is trained to recognize students with elaborate disguises
+
+
+You are given a key and it is your task to decrypt a secret message that was encrypted using XOR encryption.\n Once you crack the code, you will know the location of the classroom! \n
